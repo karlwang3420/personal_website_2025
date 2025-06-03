@@ -4,6 +4,7 @@
 		date: string;
 		description: string[];
 		company: string;
+		barColor?: string;
 		start: Date;
 		end: Date;
 	};
@@ -44,15 +45,21 @@
 </script>
 
 <template>
-	<div class="flex flex-col items-center">
+	<div class="flex flex-col items-center w-[1680px]">
 		<div class="text-lg font-semibold px-1 border-gray-500 uppercase">Now</div>
-		<div class="flex min-w-[600px] lg:min-w-[1000px] min-h-[600px]">
+		<div
+			class="flex min-w-[1000px] xl:min-w-[1380px] 2xl:min-w-[1680px] h-[800px]">
 			<!-- left -->
 			<div class="flex-1 relative">
 				<div
 					v-for="content of contentsLeft"
 					:key="content.start.valueOf()"
-					class="mr-1 absolute left-0 border-r-8 border-[#038f5b] flex items-center"
+					class="mr-1 absolute border-r-8 flex items-center"
+					:class="{
+						'bar-orange': content.barColor === 'orange',
+						'bar-blue': content.barColor === 'blue',
+						'bar-default': !content.barColor,
+					}"
 					:style="`bottom: ${calculatePercentage(
 						content.start,
 						beginning
@@ -62,7 +69,7 @@
 						<div class="text-xl">{{ content.company }}</div>
 						<div class="text-base italic">{{ content.date }}</div>
 						<div
-							class="text-base max-w-[700px] indent-2 mx-4 border-2 rounded-2xl p-2 border-gray-400 bg-neutral-200">
+							class="text-base indent-2 mx-4 border-2 rounded-2xl p-2 border-gray-400 bg-neutral-200">
 							<p v-for="(paragraph, index) of content.description" :key="index">
 								{{ paragraph }}
 							</p>
@@ -79,7 +86,12 @@
 				<div
 					v-for="content of contentsRight"
 					:key="content.start.valueOf()"
-					class="ml-1 absolute left-0 w-full border-l-8 border-[#038f5b] flex items-center"
+					class="ml-1 absolute left-0 w-full border-l-8 flex items-center"
+					:class="{
+						'bar-orange': content.barColor === 'orange',
+						'bar-blue': content.barColor === 'blue',
+						'bar-default': !content.barColor,
+					}"
 					:style="`bottom: ${calculatePercentage(
 						content.start,
 						beginning
@@ -89,7 +101,7 @@
 						<div class="text-xl">{{ content.company }}</div>
 						<div class="text-base italic">{{ content.date }}</div>
 						<div
-							class="text-base max-w-[700px] indent-2 mx-4 border-2 rounded-2xl p-2 border-gray-400 bg-neutral-200">
+							class="text-base indent-2 mx-4 border-2 rounded-2xl p-2 border-gray-400 bg-neutral-200">
 							<p v-for="(paragraph, index) of content.description" :key="index">
 								{{ paragraph }}
 							</p>
@@ -101,3 +113,15 @@
 		<div class="text-lg font-semibold px-1 border-gray-500 uppercase">2015</div>
 	</div>
 </template>
+
+<style scoped>
+	.bar-default {
+		border-color: #038f5b;
+	}
+	.bar-orange {
+		border-color: #f97316;
+	}
+	.bar-blue {
+		border-color: #2563eb;
+	}
+</style>
